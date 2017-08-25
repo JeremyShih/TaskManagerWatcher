@@ -6,7 +6,9 @@ namespace TaskManagerWatcher
     {
         static void Main(string[] args)
         {
-            double waitMinute = 5;
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
+
+            double waitMinute = 10;
             Ctrl ctrl = new Ctrl();
             Model model = new Model();
             try
@@ -20,14 +22,11 @@ namespace TaskManagerWatcher
                         bool status = ctrl.IsProcessOpen(proc.Key);
                         Console.WriteLine("Process is running = " + status);
 
-                        if (status)
-                            continue;
-                        else
+                        if (!status)
                         {
                             if (!System.IO.File.Exists(proc.ProcPath))
                             {
                                 Console.WriteLine("Program file does not exist at the path: " + proc.ProcPath);
-                                continue;
                             }
                             else
                             {
@@ -46,9 +45,9 @@ namespace TaskManagerWatcher
                     }
                     Console.WriteLine();
                     System.Threading.Thread.Sleep((int)(waitMinute * 60 * 1000));
-                } while (model.ProcessList.Count > 0);
+                } while (true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.ToString());
@@ -57,6 +56,11 @@ namespace TaskManagerWatcher
                 log.WriteLog(ex.ToString());
                 Console.ReadLine();
             }
+        }
+        static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            WatcherLog log = new WatcherLog();
+            log.WriteLog("Process terminated!");
         }
     }
 }

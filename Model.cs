@@ -16,6 +16,7 @@ namespace TaskManagerWatcher
                     _ProcessList = new List<CheckProc>();
                     _ProcessList.Add(new CheckProc("result", GetProgramPath("result")));
                     _ProcessList.Add(new CheckProc("fb", GetProgramPath("fb")));
+                    _ProcessList.Add(new CheckProc("esprit", GetProgramPath("esprit")));
                 }
                 return _ProcessList;
             }
@@ -24,7 +25,7 @@ namespace TaskManagerWatcher
         private string GetProgramPath(string key)
         {
             string[] files = Directory.GetFiles(startupPath);
-            foreach(string filePath in files)
+            foreach (string filePath in files)
             {
                 if (filePath.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0)
                     return filePath;
@@ -45,10 +46,10 @@ namespace TaskManagerWatcher
     public class WatcherLog
     {
         private string logPath = @"D:\TaskManagerWatcher.txt";
-        
+
         public void WriteLog(string content)
         {
-            using (StreamWriter sw = new StreamWriter(logPath))
+            using (StreamWriter sw = new StreamWriter(logPath, true))
             {
                 string dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 sw.WriteLine(dateTime + "  " + content);
