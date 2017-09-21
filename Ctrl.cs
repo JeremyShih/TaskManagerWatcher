@@ -9,8 +9,13 @@ namespace TaskManagerWatcher
         {
             foreach (Process clsProcess in Process.GetProcesses())
             {
-                if (clsProcess.ProcessName.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
+                int start = clsProcess.ProcessName.IndexOf(name, StringComparison.OrdinalIgnoreCase);
+                int len = clsProcess.ProcessName.Length;
+                int nameLength = name.Length;
+                if (start >= 0 && start + nameLength == len)
+                {
                     return true;
+                }
             }
             return false;
         }

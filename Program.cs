@@ -11,6 +11,7 @@ namespace TaskManagerWatcher
             double waitMinute = 10;
             Ctrl ctrl = new Ctrl();
             Model model = new Model();
+            Console.WriteLine("Startup Path = " + model.StartupDir);
             try
             {
                 do
@@ -31,6 +32,7 @@ namespace TaskManagerWatcher
                             else
                             {
                                 WatcherLog log = new WatcherLog();
+                                log.WriteLog("Process Name = " + proc.Key);
                                 log.WriteLog("Starting Process...");
                                 Console.WriteLine("Starting Process...");
                                 ctrl.StartProcess(proc.ProcPath);
